@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head id="head">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Load C Code from Google Docs</title>
+        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/dracula.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
+</head>
+
+<body>
+        <style>
+                body {
+                        background-color: #1e1e1e;
+                        color: white;
+                        font-family: 'Fira Code', monospace;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 20px;
+                }
+
+                pre {
+                        width: 80%;
+                        padding: 15px;
+                        border-radius: 10px;
+                        overflow-x: auto;
+                        background-color: #131513;
+                }
+
+                h2 {
+                        color: #d8d8d8;
+                }
+        </style>
+        <h2>✨ C Code from Google Docs</h2>
+        <pre><code id="code-container" class="language-c"></code></pre>
+        <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                        let docLink = "https://docs.google.com/document/d/1e5wVyMIzzjF57eLoe91i3z7cTCZ1cX7-mGEcayj5C9c/export?format=txt";
+
+                        fetch(docLink)
+                                .then(response => response.text())
+                                .then(data => {
+                                        function escapeHTML(str) {
+                                                return str.replace(/&/g, "&amp;")
+                                                        .replace(/</g, "&lt;")
+                                                        .replace(/>/g, "&gt;");
+                                        }
+
+                                        let codeContainer = document.getElementById("code-container");
+                                        codeContainer.innerHTML = escapeHTML(data);
+
+                                        // Highlight code ngay sau khi tải xong
+                                        hljs.highlightElement(codeContainer);
+                                })
+                                .catch(error => console.error('Error loading Google Docs file:', error));
+                });
+        </script>
+</body>
+
+</html>
